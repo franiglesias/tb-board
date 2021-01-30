@@ -12,7 +12,6 @@ def thermometer():
     adc = AnalogDigitalConverter()
 
     thermistor = PhotoResistor(analog_digital_converter=adc, channel=0, voltage=3.3)
-
     red = Led(Pin(11), 'Red')
     red.connect_input(thermistor)
 
