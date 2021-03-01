@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
 
 from board.board import Board
-from board.pin import Pin
-from component.analog_input.photoresistor import PhotoResistor
-from component.led.led import Led
+from board.pin import Pin, InputPin
 from component.analog_digital_converter import AnalogDigitalConverter
+from component.analog_input.joystick import Joystick
+from component.led.led import Led
 
 
-def thermometer():
+def joystick():
     board = Board()
     adc = AnalogDigitalConverter()
 
-    thermistor = PhotoResistor(analog_digital_converter=adc, channel=0, voltage=3.3)
-    red = Led(Pin(11), 'Red')
-    red.connect_input(thermistor)
+    js = Joystick(analog_digital_converter=adc, channel_x=1, channel_y=0, button_pin=InputPin(12))
 
+    red = Led(Pin(11))
+    red.connect_input(js.output_y())
     board.connect(adc)
-    board.connect(thermistor)
+    board.connect(js)
     board.connect(red)
+
     try:
         board.check()
         board.loop()
@@ -26,4 +27,4 @@ def thermometer():
 
 
 if __name__ == '__main__':
-    thermometer()
+    joystick()
